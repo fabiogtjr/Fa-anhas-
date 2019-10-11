@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Fábio Garcia - Ativação por voz</title>
+</head>
+
+<body>
+    <p id="output"></p>
+    <button id="start">Pressione para Falar</button> <!-- Botão que inicia o microfone -->
+    <script>
+        (() => {
+            const startBtn = document.querySelector('#start');
+            const output = document.querySelector('#output');
+            function start() {
+                //Executa o webkit de reconhecmento de voz
+                const recognition = new webkitSpeechRecognition();
+                recognition.interimResults = true;
+                //Idioma pt-BR
+                recognition.lang = "pt-BR";
+                recognition.continuous = true;
+                recognition.start();
+                // Evento executado quando você fala no microfone
+                recognition.onresult = function (event) {
+                    for (let i = event.resultIndex; i < event.results.length; i++) {
+                        if (event.results[i].isFinal) {
+                            // Retorna em String a Frase falada
+                            const content = event.results[i][0].transcript.trim();
+                            output.textContent = content;
+                            //Verifica se a frase possui a palavra determinada
+                            if (content.match("Facebook")) {
+                                window.location = 'http://facebook.com.br';
+                            } else if (content.match("Instagram")) {
+                                window.location = 'http://instagram.com.br';
+                            } else if (content.match("Twitter")) {
+                                window.location = 'http://twitter.com.br';
+                            } else if (content.match("quaestum") || content.match("question") || content.match("ganho")) {
+                                window.location = 'http://quaestum.com.br';
+                            } else if (content.match("LinkedIn") || content.match("Linkedin")) {
+                                window.location = 'http://linkedin.com.br';
+                            } else if (content.match("Google")) {
+                                window.location = 'http://google.com.br';
+                            } else if (content.match("Whatsapp") || content.match("WhatsApp") || content.match("Zap") || content.match("Zep") || content.match("Hiroshima Nagasaki") || content.match("Hiroshima nagazap")) {
+                                window.location = 'http://web.whatsapp.com';
+                            }
+                        }
+                    }
+                };
+            };
+            startBtn.addEventListener('click', () => start());
+        })();
+    </script>
+</body>
+
+</html>
